@@ -42,3 +42,6 @@ windows/popover/tsconfig.tsbuildinfo
 
 # Kilo Code local settings
 .kilo/
+
+# direnv / nix-direnv local cache
+.direnv/
