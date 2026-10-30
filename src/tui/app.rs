@@ -1227,6 +1227,19 @@ async fn build_outcome(
             .await?;
             Ok(outcome)
         }
+        VendorId::Junie => {
+            let (api_key, cache) = api_key_and_cache(config, vendor, tab.account.as_deref())?;
+            let outcome = fetch_api_keyed(
+                async {
+                    crate::junie::fetch::fetch_snapshot(&api_key, &cache, ttl)
+                        .await
+                        .map(Into::into)
+                },
+                &api_key,
+            )
+            .await?;
+            Ok(outcome)
+        }
     }
 }
 

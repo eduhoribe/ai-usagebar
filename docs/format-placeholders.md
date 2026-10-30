@@ -554,3 +554,9 @@ the percentage Cline reports and each open window's reset; `{cline_plan}` is
 the plan name and `{cline_period_end}` the billing period's end. A limit the
 account does not report leaves its placeholders empty rather than guessing a
 figure.
+
+### Junie
+
+`{junie_balance}` shows the remaining AI credit balance (for example,
+`12.50 credits`); `{plan}` shows the JetBrains AI plan. The endpoint does
+not report percentages or reset dates. See [Junie setup](junie.md).

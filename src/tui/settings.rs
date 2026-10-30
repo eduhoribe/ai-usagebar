@@ -185,6 +185,14 @@ pub const KEY_VENDORS: &[KeyVendor] = &[
         secret_label: "API key",
         note: "billing credits",
     },
+    KeyVendor {
+        id: VendorId::Junie,
+        label: "Junie",
+        section: VendorId::Junie.config_section(),
+        config_key: "api_key",
+        secret_label: "API key",
+        note: "billing credits",
+    },
 ];
 
 /// How many providers the on/off section lists: every known vendor, in

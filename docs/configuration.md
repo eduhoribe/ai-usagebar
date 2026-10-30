@@ -30,7 +30,7 @@ ai-usagebar-tui --config ./config.test.toml
 #                         # | zai | openrouter | deepseek | deepinfra | kimi | kilo | novita
 #                         # | moonshot | grok | supergrok | grokbot | antigravity | cursor
 #                         # | minimax | kiro | nous | opencode-go | commandcode
-#                         # | orcarouter | modelstudio | lyceum | devin | cline | muse-code | droid
+#                         # | orcarouter | modelstudio | lyceum | junie | devin | cline | muse-code | droid
 #                         # | synthetic
 # Which vendors the Overview lists, in this order. The TUI tab bar leads with
 # the same list; enabled vendors left off it follow in the canonical order.
@@ -163,6 +163,14 @@ api_key_env = "LYCEUM_API_KEY"
 # label = "work"
 # api_key_env = "LYCEUM_WORK_API_KEY"
 # api_key = "..."
+
+[junie]
+enabled = false            # opt in; create a key at https://junie.jetbrains.com/cli
+api_key_env = "JUNIE_API_KEY"
+# api_key = "..."           # Settings can save this with mode 600
+# [[junie.accounts]]
+# label = "work"
+# api_key_env = "JUNIE_WORK_API_KEY"
 
 [orcarouter]
 enabled = true             # disabled by default; enable once you add an API key

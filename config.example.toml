@@ -11,7 +11,7 @@
 # Valid: anthropic | anthropic_api | openai | copilot | zai | openrouter | deepseek
 #        | kimi | kilo | novita | moonshot | grok | supergrok | grokbot | antigravity
 #        | cursor | minimax | kiro | nous | opencode-go | commandcode | ollama
-#        | orcarouter | modelstudio | lyceum | devin | cline | muse-code | droid | synthetic
+#        | orcarouter | modelstudio | lyceum | junie | devin | cline | muse-code | droid | synthetic
 # When unset, the TUI opens on the Overview (all vendors at once); set this to
 # open directly on a vendor's tab instead.
 # primary = "anthropic"
@@ -279,7 +279,7 @@ api_key_env = "OPENROUTER_API_KEY"
 # management_api_key_env = "OPENROUTER_WORK_MANAGEMENT_API_KEY"  # optional
 #
 # The same array works for [zai], [deepseek], [deepinfra], [kilo], [novita],
-# [moonshot], [grok], [minimax], [orcarouter], and [lyceum] — e.g.
+# [moonshot], [grok], [minimax], [orcarouter], [lyceum], and [junie] — e.g.
 # [[deepinfra.accounts]] — with the same show_default_account switch.
 # Region/team/organization/display settings stay per provider. See
 # docs/api-key-accounts.md.
@@ -698,3 +698,15 @@ enabled = false
                                   # environment outranks the credential file.
 # api_key = "[REDACTED]"          # optional inline fallback; prefer the env var
 # auth_paths = ["~/.cline/data/settings/providers.json"]
+
+# JetBrains Junie AI credit balance. Create a Junie API key at
+# https://junie.jetbrains.com/cli (a model-vendor BYOK key does not work).
+# Reads the account balance only; never starts a Junie agent session.
+[junie]
+enabled = false
+api_key_env = "JUNIE_API_KEY"
+# api_key = "your-junie-api-key"  # alternatively, paste it in Settings
+# show_default_account = false
+# [[junie.accounts]]
+# label = "work"
+# api_key_env = "JUNIE_WORK_API_KEY"

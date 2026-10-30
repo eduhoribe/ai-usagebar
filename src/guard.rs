@@ -330,6 +330,7 @@ mod tests {
             VendorId::Grok => MacosMirror::Slot("grok_balance"),
             VendorId::Kilo => MacosMirror::Slot("kilo_balance"),
             VendorId::Lyceum => MacosMirror::Slot("lyceum_balance"),
+            VendorId::Junie => MacosMirror::Slot("junie_balance"),
             VendorId::Minimax => MacosMirror::Slot("minimax_video_pct"),
             VendorId::Moonshot => MacosMirror::Slot("km_balance"),
             VendorId::Novita => MacosMirror::Slot("nv_balance"),

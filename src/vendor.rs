@@ -44,6 +44,7 @@ pub(crate) const VENDOR_SECRET_ENV_VARS: &[&str] = &[
     "COMMANDCODE_API_KEY",
     "ORCAROUTER_API_KEY",
     "LYCEUM_API_KEY",
+    "JUNIE_API_KEY",
     "GITHUB_COPILOT_TOKEN",
     "GH_TOKEN",
     "GITHUB_TOKEN",
@@ -189,6 +190,7 @@ pub enum VendorId {
     OrcaRouter,
     ModelStudio,
     Lyceum,
+    Junie,
     Devin,
     Cline,
     #[serde(rename = "muse-code")]
@@ -251,6 +253,7 @@ impl VendorId {
             VendorId::OrcaRouter => "orcarouter",
             VendorId::ModelStudio => "modelstudio",
             VendorId::Lyceum => "lyceum",
+            VendorId::Junie => "junie",
             VendorId::Devin => "devin",
             VendorId::MuseCode => "muse-code",
             VendorId::Cline => "cline",
@@ -291,6 +294,7 @@ impl VendorId {
             VendorId::OrcaRouter => "OrcaRouter",
             VendorId::ModelStudio => "Model Studio",
             VendorId::Lyceum => "Lyceum",
+            VendorId::Junie => "Junie",
             VendorId::Devin => "Devin",
             VendorId::MuseCode => "Muse Code",
             VendorId::Droid => "Droid",
@@ -332,6 +336,7 @@ impl VendorId {
             // Same story for Model Studio: the `mst` short name is unique.
             VendorId::ModelStudio => VendorId::ModelStudio.short_name(),
             VendorId::Lyceum => VendorId::Lyceum.short_name(),
+            VendorId::Junie => VendorId::Junie.short_name(),
             VendorId::Devin => VendorId::Devin.short_name(),
             VendorId::MuseCode => VendorId::MuseCode.short_name(),
             VendorId::Cline => VendorId::Cline.short_name(),
@@ -372,6 +377,7 @@ impl VendorId {
             VendorId::OrcaRouter => "orc",
             VendorId::ModelStudio => "mst",
             VendorId::Lyceum => "lyc",
+            VendorId::Junie => "jun",
             VendorId::Devin => "dvn",
             VendorId::MuseCode => "msc",
             VendorId::Cline => "cln",
@@ -416,6 +422,7 @@ impl VendorId {
             VendorId::OrcaRouter => "orcarouter",
             VendorId::ModelStudio => "modelstudio",
             VendorId::Lyceum => "lyceum",
+            VendorId::Junie => "junie",
             VendorId::Devin => "devin",
             VendorId::MuseCode => "muse-code",
             VendorId::Droid => "droid",
@@ -450,7 +457,8 @@ impl VendorId {
             | VendorId::OpenCodeGo
             | VendorId::Ollama
             | VendorId::OrcaRouter
-            | VendorId::Lyceum => AuthKind::ApiKey,
+            | VendorId::Lyceum
+            | VendorId::Junie => AuthKind::ApiKey,
             // No credential of their own: another local product's session is
             // the login. Antigravity has no credential file at all (the binary
             // probes whichever local server answers), Cursor and Kiro read the
@@ -494,6 +502,7 @@ impl VendorId {
             VendorId::Ollama => "OLLAMA_API_KEY",
             VendorId::OrcaRouter => "ORCAROUTER_API_KEY",
             VendorId::Lyceum => "LYCEUM_API_KEY",
+            VendorId::Junie => "JUNIE_API_KEY",
             // OAuth-first, with an environment override for CI and headless
             // use. Neither name is configurable, so neither has an
             // `api_key_env` field in its config section.
@@ -568,7 +577,8 @@ impl VendorId {
             | VendorId::OpenCodeGo
             | VendorId::Ollama
             | VendorId::OrcaRouter
-            | VendorId::Lyceum => "Add an API key in Settings, then Refresh.",
+            | VendorId::Lyceum
+            | VendorId::Junie => "Add an API key in Settings, then Refresh.",
         }
     }
 
@@ -607,7 +617,8 @@ impl VendorId {
             | VendorId::OpenCodeGo
             | VendorId::Ollama
             | VendorId::OrcaRouter
-            | VendorId::Lyceum => "",
+            | VendorId::Lyceum
+            | VendorId::Junie => "",
         }
     }
 
@@ -647,6 +658,7 @@ impl VendorId {
             VendorId::OrcaRouter,
             VendorId::ModelStudio,
             VendorId::Lyceum,
+            VendorId::Junie,
             VendorId::Devin,
             VendorId::Cline,
             VendorId::MuseCode,
@@ -838,6 +850,7 @@ mod tests {
             "GITHUB_COPILOT_TOKEN",
             "ORCAROUTER_API_KEY",
             "LYCEUM_API_KEY",
+            "JUNIE_API_KEY",
         ];
         for name in configured_defaults {
             assert!(VENDOR_SECRET_ENV_VARS.contains(&name), "missing {name}");

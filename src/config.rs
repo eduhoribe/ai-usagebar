@@ -74,6 +74,7 @@ pub struct Config {
     pub orcarouter: OrcaRouterConfig,
     pub modelstudio: ModelStudioConfig,
     pub lyceum: LyceumConfig,
+    pub junie: JunieConfig,
     pub devin: DevinConfig,
     pub droid: DroidConfig,
     #[serde(rename = "muse-code")]
@@ -1827,6 +1828,28 @@ impl Default for LyceumConfig {
     }
 }
 
+/// Junie AI credit balance authenticated with a Junie API key.
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(default)]
+pub struct JunieConfig {
+    pub enabled: bool,
+    pub accounts: Vec<ApiKeyAccount>,
+    pub show_default_account: bool,
+    pub api_key_env: String,
+    pub api_key: Option<String>,
+}
+impl Default for JunieConfig {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            accounts: Vec::new(),
+            show_default_account: true,
+            api_key_env: "JUNIE_API_KEY".into(),
+            api_key: None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(default)]
 pub struct MinimaxConfig {
@@ -2641,6 +2664,7 @@ impl Config {
             self.ollama.api_key.as_deref(),
             self.orcarouter.api_key.as_deref(),
             self.lyceum.api_key.as_deref(),
+            self.junie.api_key.as_deref(),
             self.antigravity.oauth_client_secret.as_deref(),
             self.cline.api_key.as_deref(),
         ]
@@ -2746,6 +2770,7 @@ impl Config {
             VendorId::OrcaRouter => self.orcarouter.enabled,
             VendorId::ModelStudio => self.modelstudio.enabled,
             VendorId::Lyceum => self.lyceum.enabled,
+            VendorId::Junie => self.junie.enabled,
             VendorId::Devin => self.devin.enabled,
             VendorId::Droid => self.droid.enabled,
             VendorId::MuseCode => self.muse.enabled,
@@ -2776,6 +2801,7 @@ impl Config {
             VendorId::Ollama => &self.ollama.api_key_env,
             VendorId::OrcaRouter => &self.orcarouter.api_key_env,
             VendorId::Lyceum => &self.lyceum.api_key_env,
+            VendorId::Junie => &self.junie.api_key_env,
             VendorId::Cline => &self.cline.api_key_env,
             // Fixed names: OAuth-first providers whose environment override is
             // not user-renameable, and the providers with no key at all.
@@ -2817,6 +2843,7 @@ impl Config {
             VendorId::Ollama => self.ollama.api_key.as_deref(),
             VendorId::OrcaRouter => self.orcarouter.api_key.as_deref(),
             VendorId::Lyceum => self.lyceum.api_key.as_deref(),
+            VendorId::Junie => self.junie.api_key.as_deref(),
             VendorId::Cline => self.cline.api_key.as_deref(),
             VendorId::Anthropic
             | VendorId::Openai
@@ -2839,7 +2866,7 @@ impl Config {
     /// The API-key vendors that take a `[[<vendor>.accounts]]` array —
     /// OpenRouter's (#221), generalized. Kimi is left out on purpose: its
     /// fallback is the Kimi Code CLI's single OAuth login, not a key.
-    pub const API_KEY_ACCOUNT_VENDORS: [VendorId; 11] = [
+    pub const API_KEY_ACCOUNT_VENDORS: [VendorId; 12] = [
         VendorId::Zai,
         VendorId::Openrouter,
         VendorId::Deepseek,
@@ -2851,6 +2878,7 @@ impl Config {
         VendorId::Minimax,
         VendorId::OrcaRouter,
         VendorId::Lyceum,
+        VendorId::Junie,
     ];
 
     /// The named `[[<vendor>.accounts]]` array, or `None` for a vendor that
@@ -2868,6 +2896,7 @@ impl Config {
             VendorId::Minimax => Some(&self.minimax.accounts),
             VendorId::OrcaRouter => Some(&self.orcarouter.accounts),
             VendorId::Lyceum => Some(&self.lyceum.accounts),
+            VendorId::Junie => Some(&self.junie.accounts),
             _ => None,
         }
     }
@@ -2887,6 +2916,7 @@ impl Config {
             VendorId::Minimax => self.minimax.show_default_account,
             VendorId::OrcaRouter => self.orcarouter.show_default_account,
             VendorId::Lyceum => self.lyceum.show_default_account,
+            VendorId::Junie => self.junie.show_default_account,
             _ => true,
         }
     }
@@ -4183,6 +4213,44 @@ api_key = "synthetic-account"
         assert_eq!(
             config
                 .resolve_account_api_key_for(VendorId::Lyceum, Some("work"))
+                .unwrap(),
+            "synthetic-account"
+        );
+    }
+
+    #[test]
+    fn junie_is_opt_in_and_uses_shared_api_key_account_resolution() {
+        let defaults = JunieConfig::default();
+        assert!(!defaults.enabled);
+        assert_eq!(defaults.api_key_env, "JUNIE_API_KEY");
+        let override_file = write_toml("[junie]\napi_key_env = \"JUNIE_CUSTOM_TEST_KEY\"\n");
+        let override_config = Config::load_from(override_file.path()).unwrap();
+        assert_eq!(
+            override_config.api_key_env_for(VendorId::Junie),
+            "JUNIE_CUSTOM_TEST_KEY"
+        );
+        let file = write_toml(
+            r#"[junie]
+enabled = true
+api_key_env = ""
+api_key = "synthetic-inline"
+[[junie.accounts]]
+label = "work"
+api_key = "synthetic-account"
+"#,
+        );
+        let config = Config::load_from(file.path()).unwrap();
+        assert!(config.is_enabled(VendorId::Junie));
+        assert_eq!(config.api_key_env_for(VendorId::Junie), "");
+        assert_eq!(
+            config
+                .resolve_account_api_key_for(VendorId::Junie, None)
+                .unwrap(),
+            "synthetic-inline"
+        );
+        assert_eq!(
+            config
+                .resolve_account_api_key_for(VendorId::Junie, Some("work"))
                 .unwrap(),
             "synthetic-account"
         );

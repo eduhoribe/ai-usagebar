@@ -19,6 +19,7 @@ defensive and includes opt-in live tests for catching response changes.
 | **MiniMax** | `api.minimax.io/v1/token_plan/remains` (official Token Plan quota route) | Token Plan rolling interval window + weekly, per model bucket (text, video) | No — widget/TUI only |
 | **Kilo** | `api.kilo.ai/api/profile/balance` (undocumented; extension-internal) | Remaining credit balance ($) | No — widget/TUI only |
 | **Lyceum** | `api.lyceum.technology/api/v2/external/billing/credits` (documented) | Available USD balance and amount used; no percentage quota or reset window | No — widget/TUI only |
+| **Junie** | `ingrazzio-cloud-prod.labs.jb.gg/auth/test` (undocumented; official CLI 3893.6) | Remaining AI credits and plan; no quota denominator or reset | No — widget/TUI only |
 | **Novita** | `api.novita.ai/openapi/v1/billing/balance/detail` (documented) | Remaining credit balance ($) | No — widget/TUI only |
 | **Synthetic** | `api.synthetic.new/v2/quotas` (documented) | Weekly regenerating credit budget: percent remaining + next regen tick | No — widget/TUI only |
 | **Moonshot** | `api.moonshot.ai\|.cn/v1/users/me/balance` (documented) | Account balance ($ on `.ai`, ¥ on `.cn`) | No — widget/TUI only |

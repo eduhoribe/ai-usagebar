@@ -513,6 +513,7 @@ pub enum VendorSnapshot {
     OrcaRouter(OrcaRouterSnapshot),
     ModelStudio(ModelStudioSnapshot),
     Lyceum(LyceumSnapshot),
+    Junie(crate::junie::types::Snapshot),
     Devin(DevinSnapshot),
     Droid(DroidSnapshot),
     MuseCode(MuseSnapshot),

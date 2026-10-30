@@ -39,6 +39,7 @@ pub mod grokbot;
 /// Source-scanning helpers for structural guard tests. Test-only.
 #[cfg(test)]
 pub(crate) mod guard;
+pub mod junie;
 pub mod jwt;
 pub mod kilo;
 pub mod kimi;

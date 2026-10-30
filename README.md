@@ -314,6 +314,7 @@ come from environment variables or `config.toml`.
 | Devin | Existing official Devin CLI login | Opt in (`[devin]`) after signing in with the Devin CLI. Reuses its existing `credentials.toml` read-only; ai-usagebar never logs in, refreshes, or writes credentials. Reports daily and weekly quota usage and an optional overage balance. |
 | Droid (Factory) | Existing `droid` CLI login | Opt in (`[droid]`) after signing in with `droid` on Linux. Reuses the CLI's `~/.factory/auth.v2.keyring` login read-only — the Secret Service key never leaves the keyring and ai-usagebar never refreshes or writes the token; near expiry it asks the CLI to renew its own login (`droid doctor --checks auth`). Reports Standard 5-hour/weekly/monthly windows, the Droid Core bucket, and the extra-usage balance. |
 | Cline / ClinePass | Existing `cline` CLI login | Enable `[cline]`. No key to paste; the CLI's own credential is reused. `CLINE_API_KEY` overrides it. |
+| Junie (JetBrains) | Junie API key (`JUNIE_API_KEY`) | Enable `[junie]` and add a key from [Junie Tokens](https://junie.jetbrains.com/cli). Shows remaining AI credits and plan. Supports named accounts; does not read the CLI’s OAuth login. [Setup and limitations](docs/junie.md). |
 | Muse Code | Existing file-based Muse CLI OAuth login | Enable `[muse-code]` after `muse login`. Reports subscription session/weekly quota and resets. Credentials are read only; Meta can omit quotas while the session window is idle. [Setup and limitations](docs/muse-code.md). |
 
 ### Nous credits and OpenCode Go

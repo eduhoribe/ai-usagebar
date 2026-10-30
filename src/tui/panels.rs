@@ -423,6 +423,7 @@ pub fn compact_cells(snapshot: &VendorSnapshot) -> (String, Vec<(String, PaceSev
         VendorSnapshot::Synthetic(s) => {
             (String::new(), vec![pct("week", s.weekly.utilization_pct)])
         }
+        VendorSnapshot::Junie(s) => (s.plan.clone(), vec![(s.balance_label(), PaceSeverity::Low)]),
         VendorSnapshot::Lyceum(s) => (
             String::new(),
             vec![(usd(s.available_credits), PaceSeverity::Low)],
@@ -684,6 +685,7 @@ pub fn headline_pct(snapshot: &VendorSnapshot) -> Option<i32> {
         | VendorSnapshot::Deepinfra(_)
         | VendorSnapshot::Kilo(_)
         | VendorSnapshot::Novita(_)
+        | VendorSnapshot::Junie(_)
         | VendorSnapshot::Lyceum(_)
         | VendorSnapshot::Moonshot(_)
         | VendorSnapshot::Grok(_) => None,
@@ -753,6 +755,7 @@ pub(crate) fn sections_with_metadata_for(
                 VendorSnapshot::Kilo(s) => kilo_sections(s, prefs),
                 VendorSnapshot::Novita(s) => novita_sections(s, prefs),
                 VendorSnapshot::Synthetic(s) => synthetic_sections(s, now, pace_tolerance),
+                VendorSnapshot::Junie(s) => junie_sections(s),
                 VendorSnapshot::Lyceum(s) => lyceum_sections(s),
                 VendorSnapshot::Moonshot(s) => moonshot_sections(s, prefs),
                 VendorSnapshot::Grok(s) => grok_sections(s, prefs),
@@ -1857,6 +1860,24 @@ fn synthetic_sections(
     sections
 }
 
+fn junie_sections(s: &crate::junie::types::Snapshot) -> SectionBuilder {
+    SectionBuilder::new(vec![
+        Section::Title {
+            left: crate::vendor::VendorId::Junie.display_name().into(),
+            right: None,
+        },
+        Section::Spacer,
+        Section::Text {
+            label: "Plan".into(),
+            value: s.plan.clone(),
+        },
+        Section::Text {
+            label: "Balance".into(),
+            value: s.balance_label(),
+        },
+    ])
+}
+
 fn lyceum_sections(s: &crate::usage::LyceumSnapshot) -> SectionBuilder {
     SectionBuilder::new(vec![
         Section::Title {
@@ -2819,6 +2840,26 @@ mod tests {
 
     fn now() -> DateTime<Utc> {
         Utc.with_ymd_and_hms(2026, 5, 23, 12, 0, 0).unwrap()
+    }
+
+    #[test]
+    fn junie_panel_reports_credits_and_plan_without_quota_windows() {
+        let snapshot = VendorSnapshot::Junie(crate::junie::types::Snapshot {
+            balance: 12.5,
+            plan: "JetBrains AI Pro".into(),
+        });
+        let sections = sections_for(&ready(snapshot.clone()), now(), 5);
+        assert!(sections.iter().any(|section| matches!(section, Section::Text { label, value } if label == "Balance" && value == "12.50 credits")));
+        assert!(sections.iter().any(|section| matches!(section, Section::Text { label, value } if label == "Plan" && value == "JetBrains AI Pro")));
+        assert!(
+            !sections
+                .iter()
+                .any(|section| matches!(section, Section::Metric { .. }))
+        );
+        assert_eq!(headline_pct(&snapshot), None);
+        let (plan, cells) = compact_cells(&snapshot);
+        assert_eq!(plan, "JetBrains AI Pro");
+        assert_eq!(cells[0].0, "12.50 credits");
     }
 
     #[test]

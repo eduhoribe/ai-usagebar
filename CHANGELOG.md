@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+### Added
+
+- Junie (JetBrains) provider: remaining AI credits and plan through a Junie
+  API key, including named accounts, Settings, the widget, TUI, shared usage
+  report, and macOS menu bar.
+
 ## [1.46.0] — 2026-10-29
 
 ### Added

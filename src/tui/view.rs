@@ -980,9 +980,12 @@ mod tests {
 
         let mut app = app_with(vec![TabState::Loading, TabState::Loading]);
         app.settings = Some(settings_state());
-        // Tall enough that the whole body (keys + provider switches +
-        // notifications + save) fits inside the 88%-height modal.
-        let mut terminal = Terminal::new(TestBackend::new(160, 72)).unwrap();
+        // Leave room for the whole body inside the 88%-height modal, even
+        // as the provider catalog grows.
+        let height = 32
+            + 2 * (crate::tui::settings::KEY_VENDORS.len()
+                + crate::tui::settings::PROVIDER_SWITCH_COUNT) as u16;
+        let mut terminal = Terminal::new(TestBackend::new(160, height)).unwrap();
         terminal.draw(|frame| draw(frame, &mut app)).unwrap();
 
         let hit = app.hit.borrow();

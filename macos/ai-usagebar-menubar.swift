@@ -102,6 +102,7 @@ let POINT_CRITICAL_MIN = 10
 // `{synthetic_pct}` / `{synthetic_reset}` (65-66) carry Synthetic's
 // subscription request quota (empty when not selected). A final literal
 // sentinel absorbs the widget's stale suffix, preserving these fields.
+// `{junie_balance}` (67) carries the Junie AI credit balance.
 let FORMAT = "{plan};;{session_pct};;{session_reset};;{weekly_pct};;{weekly_reset};;" +
              "{sonnet_pct};;{sonnet_reset};;{extra_pct};;{extra_spent};;{extra_limit};;" +
              "{scoped_model};;{scoped_pct};;{scoped_reset};;" +
@@ -121,7 +122,7 @@ let FORMAT = "{plan};;{session_pct};;{session_reset};;{weekly_pct};;{weekly_rese
              "{cline_5h_pct};;{cline_5h_reset};;{cline_7d_pct};;{cline_7d_reset};;" +
              "{cline_30d_pct};;{cline_30d_reset};;" +
              "{mst_monthly_pct};;{mst_monthly_reset};;" +
-             "{synthetic_pct};;{synthetic_reset}"
+             "{synthetic_pct};;{synthetic_reset};;{junie_balance}"
 
 let FORMAT_WITH_SENTINEL = FORMAT + ";;__aiub_end__"
 
@@ -628,6 +629,7 @@ func parse(_ text: String, vendor: String) -> Snapshot? {
     case "moonshot": balanceFieldIndex = 21
     case "grok": balanceFieldIndex = 22
     case "anthropic_api": balanceFieldIndex = 23
+    case "junie": balanceFieldIndex = 67
     case "lyceum": balanceFieldIndex = 52
     case "deepinfra": balanceFieldIndex = 53
     default: balanceFieldIndex = nil
@@ -1184,7 +1186,7 @@ func claudeAccountLabels() -> [String] {
 /// The API-key vendors whose config takes a `[[<vendor>.accounts]]` array —
 /// Rust's `Config::API_KEY_ACCOUNT_VENDORS`, by slug.
 let API_KEY_ACCOUNT_VENDORS = [
-    "zai", "openrouter", "deepseek", "deepinfra", "kilo", "novita", "moonshot", "grok", "minimax", "orcarouter", "lyceum",
+    "zai", "openrouter", "deepseek", "deepinfra", "kilo", "novita", "moonshot", "grok", "minimax", "orcarouter", "lyceum", "junie",
 ]
 
 /// Explicit `[[<vendor>.accounts]]` labels for one API-key vendor.
