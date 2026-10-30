@@ -84,7 +84,7 @@ ratatui-bubbletea-theme = "0.2"
 # Reads Cursor's local `state.vscdb` (its own on-disk session store) to find
 # the OAuth token the Cursor IDE already wrote there. "bundled" statically
 # links SQLite via cc, so no system libsqlite3-dev is required — keeping the
-# AUR source build's hermeticity (see CLAUDE.md's release checklist).
+# AUR source build's hermeticity (see AGENTS.md's release checklist).
 rusqlite = { version = "0.41", default-features = false, features = ["bundled"] }
 unicode-width = "0.2"
 getrandom = "0.4.3"

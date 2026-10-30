@@ -684,7 +684,7 @@ jobs:
 
       # Compute the real sha256s and inject them into both PKGBUILDs so the
       # AUR deploy action publishes pinned hashes (the in-tree PKGBUILDs
-      # carry `SKIP` between releases by convention — see CLAUDE.md).
+      # carry `SKIP` between releases by convention — see AGENTS.md).
       - name: Pin sha256s in PKGBUILDs
         env:
           TAG: ${{ inputs.ref || github.ref_name }}

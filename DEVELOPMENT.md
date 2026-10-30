@@ -2,7 +2,7 @@
 
 Build, test, and run `ai-usagebar` from a checkout. For the pre-PR gate and
 provider-addition rules see [CONTRIBUTING.md](CONTRIBUTING.md). For release
-invariants see [CLAUDE.md](CLAUDE.md).
+invariants see [AGENTS.md](AGENTS.md).
 
 - [Prerequisites](#prerequisites)
 - [Build](#build)
@@ -211,7 +211,7 @@ Settings `KEY_VENDORS` (if API-key), placeholders, changelog. Missing
 ## See also
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — pre-PR gate and how to add a provider
-- [CLAUDE.md](CLAUDE.md) — release checklist and invariants
+- [AGENTS.md](AGENTS.md) — release checklist and invariants
 - [docs/configuration.md](docs/configuration.md) — config reference
 - [docs/vendor-endpoints.md](docs/vendor-endpoints.md) — endpoint matrix
 - [docs/windows-build.md](docs/windows-build.md) — Windows toolchain

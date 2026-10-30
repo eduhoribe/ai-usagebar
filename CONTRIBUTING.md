@@ -43,7 +43,7 @@ Most review round-trips come from one of these. None takes long.
 
 ## Project rules worth knowing
 
-These are in `CLAUDE.md` in full. The ones contributors hit most:
+These are in `AGENTS.md` in full. The ones contributors hit most:
 
 - **The widget always exits 0.** Waybar hides a module that doesn't. Errors
   become a fallback `⚠` payload, never a non-zero exit.

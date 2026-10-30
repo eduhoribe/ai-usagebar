@@ -14,7 +14,7 @@
 //!
 //! `ai-usagebar vendors --json` emits this, so a frontend can list every
 //! provider, and say what an unusable one is missing, while knowing none of
-//! them. It is the `CLAUDE.md` rule that frontend adapters stay thin, applied
+//! them. It is the `AGENTS.md` rule that frontend adapters stay thin, applied
 //! to the one table that had escaped it.
 
 use std::path::{Path, PathBuf};
